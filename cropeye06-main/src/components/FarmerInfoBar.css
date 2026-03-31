@@ -1,0 +1,87 @@
+.farmer-info-bar {
+  width: 100%;
+  background-color: #1f6b3a;
+  color: white;
+  padding: 0;
+  margin: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  position: relative;
+  flex-shrink: 0;
+  display: block;
+}
+
+.farmer-info-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 45px;
+}
+
+.farmer-info-section {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.farmer-info-left {
+  justify-content: flex-start;
+}
+
+.farmer-info-center {
+  justify-content: center;
+}
+
+.farmer-info-right {
+  justify-content: flex-end;
+}
+
+.farmer-name,
+.farmer-date,
+.farmer-plots {
+  font-weight: 600;
+  font-size: 14px;
+  color: white;
+  white-space: nowrap;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .farmer-info-container {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 16px;
+    min-height: auto;
+  }
+
+  .farmer-info-section {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .farmer-info-left,
+  .farmer-info-right {
+    justify-content: center;
+  }
+
+  .farmer-name,
+  .farmer-date,
+  .farmer-plots {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .farmer-info-container {
+    padding: 8px 12px;
+  }
+
+  .farmer-name,
+  .farmer-date,
+  .farmer-plots {
+    font-size: 12px;
+  }
+}

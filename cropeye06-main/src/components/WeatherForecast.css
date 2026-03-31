@@ -1,0 +1,55 @@
+/* Weather Forecast Container - ensures proper alignment */
+.weather-forecast-container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: visible;
+  min-width: 0;
+}
+
+.weather-forecast-metric-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Remove margins - cards should align with Fertilizer Schedule and Soil Moisture */
+@media (min-width: 768px) {
+  .weather-temp-card {
+    margin-left: 0 !important;
+  }
+
+  .weather-humidity-card {
+    margin-right: 0 !important;
+  }
+}
+
+/* Responsive Grid Layout */
+@media (max-width: 1024px) {
+  .weather-forecast-metric-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .weather-forecast-metric-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .weather-temp-card,
+  .weather-humidity-card {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .weather-forecast-metric-cards {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}

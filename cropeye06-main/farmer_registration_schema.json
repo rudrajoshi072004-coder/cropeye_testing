@@ -1,0 +1,576 @@
+{
+    "form_name": "Farmer Registration",
+    "description": "Complete schema of all form sections, fields, types, and dropdown options for the Farmer Registration form (Add Farm).",
+    "sections": [
+        {
+            "section": "1. User Profile",
+            "description": "Basic farmer personal and location details. Always visible.",
+            "fields": [
+                {
+                    "field_name": "first_name",
+                    "label": "First Name",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "field_name": "last_name",
+                    "label": "Last Name",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "field_name": "username",
+                    "label": "Username",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "field_name": "password",
+                    "label": "Password",
+                    "type": "password",
+                    "required": true
+                },
+                {
+                    "field_name": "confirm_password",
+                    "label": "Confirm Password",
+                    "type": "password",
+                    "required": true
+                },
+                {
+                    "field_name": "email",
+                    "label": "Email",
+                    "type": "email",
+                    "required": true,
+                    "validation": "Standard email format (e.g. user@domain.com)"
+                },
+                {
+                    "field_name": "phone_number",
+                    "label": "Phone Number",
+                    "type": "tel",
+                    "required": true,
+                    "validation": "Exactly 10 digits, numbers only"
+                },
+                {
+                    "field_name": "address",
+                    "label": "Address",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "field_name": "state",
+                    "label": "State",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "field_name": "district",
+                    "label": "District",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "field_name": "taluka",
+                    "label": "Taluka",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "field_name": "documents",
+                    "label": "Documents",
+                    "type": "file",
+                    "required": false,
+                    "description": "Multiple file upload allowed"
+                }
+            ]
+        },
+        {
+            "section": "2. Farm Location & Plots (Map Section)",
+            "description": "User draws plot boundaries on an interactive map. Each plot is a separate polygon. Multiple plots can be added.",
+            "map_input": {
+                "type": "GeoJSON Polygon",
+                "description": "User draws polygon on map. Coordinates are captured automatically.",
+                "fields_auto_calculated": [
+                    "area_sqm",
+                    "area_ha",
+                    "area_acres"
+                ]
+            },
+            "per_plot_fields": {
+                "description": "These fields appear inside each individual plot card (orange bordered box). Each plot has its own set of values.",
+                "basic_info": [
+                    {
+                        "field_name": "Group_Gat_No",
+                        "label": "Group Gat No",
+                        "type": "text",
+                        "required": true,
+                        "validation": "Required - must match format like 123 or 456"
+                    },
+                    {
+                        "field_name": "Gat_No_Id",
+                        "label": "Gat No Id",
+                        "type": "text",
+                        "required": true,
+                        "validation": "Required - plot number"
+                    },
+                    {
+                        "field_name": "village",
+                        "label": "Village",
+                        "type": "text",
+                        "required": true
+                    },
+                    {
+                        "field_name": "pin_code",
+                        "label": "Pin Code",
+                        "type": "text",
+                        "required": true
+                    },
+                    {
+                        "field_name": "grapes_type",
+                        "label": "Grapes",
+                        "type": "dropdown",
+                        "required": true,
+                        "options": [
+                            "Wine",
+                            "Table Grapes"
+                        ],
+                        "conditional_child": {
+                            "trigger_value": "Table Grapes",
+                            "child_field": {
+                                "field_name": "grapes_season",
+                                "label": "Grapes Season",
+                                "type": "dropdown",
+                                "required": true,
+                                "options": [
+                                    "Late Season",
+                                    "Early Season"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "field_name": "PlantAge",
+                        "label": "Plant Age",
+                        "type": "dropdown",
+                        "required": true,
+                        "options": [
+                            "0 to 3 years",
+                            "3 to 13 years"
+                        ],
+                        "conditional_sections": {
+                            "0 to 3 years": "Triggers 'New Plantation' form section inside the plot card",
+                            "3 to 13 years": "Triggers 'Registration Page Details' form section inside the plot card"
+                        }
+                    }
+                ],
+                "irrigation_section": {
+                    "description": "Appears inside the plot card when irrigation_Type is selected.",
+                    "trigger_field": "irrigation_Type",
+                    "trigger_field_options": [
+                        "drip",
+                        "flood"
+                    ],
+                    "drip_fields": [
+                        {
+                            "field_name": "flow_Rate",
+                            "label": "Flow Rate",
+                            "type": "text",
+                            "required": true
+                        },
+                        {
+                            "field_name": "emitters",
+                            "label": "Emitters",
+                            "type": "text",
+                            "required": true
+                        }
+                    ],
+                    "flood_fields": [
+                        {
+                            "field_name": "motor_Horsepower",
+                            "label": "Motor Horsepower",
+                            "type": "text",
+                            "required": true
+                        },
+                        {
+                            "field_name": "pipe_Width",
+                            "label": "Pipe Width",
+                            "type": "text",
+                            "required": true
+                        },
+                        {
+                            "field_name": "distance_From_Motor",
+                            "label": "Distance From Motor",
+                            "type": "text",
+                            "required": true
+                        }
+                    ]
+                },
+                "new_plantation_section": {
+                    "description": "Appears inside the plot card ONLY when PlantAge = '0 to 3 years' and crop type is Grapes.",
+                    "condition": "PlantAge == '0 to 3 years'",
+                    "fields": [
+                        {
+                            "field_name": "plantation_date",
+                            "label": "Plantation Date",
+                            "type": "date",
+                            "required": true
+                        },
+                        {
+                            "field_name": "dogridge_rootstock_type",
+                            "label": "Dogridge Rootstock Type",
+                            "type": "dropdown",
+                            "required": true,
+                            "options": [
+                                "banglore",
+                                "polson"
+                            ]
+                        },
+                        {
+                            "field_name": "grafting_date",
+                            "label": "Grafting Date",
+                            "type": "date",
+                            "required": true
+                        },
+                        {
+                            "field_name": "grafted_variety",
+                            "label": "Grafted Variety",
+                            "type": "dropdown",
+                            "required": true,
+                            "options": [
+                                "Thompson",
+                                "Tas-A-Ganesh",
+                                "Sonaka",
+                                "Manik chaman",
+                                "Flame seedless",
+                                "Crimson seedless",
+                                "Red Globe",
+                                "Sudhakar seedless",
+                                "Allison",
+                                "Timco",
+                                "ARD-35",
+                                "ARD-36"
+                            ]
+                        },
+                        {
+                            "field_name": "soil_type",
+                            "label": "Soil Type",
+                            "type": "dropdown",
+                            "required": true,
+                            "options": [
+                                "Clay",
+                                "loam",
+                                "sandy loam",
+                                "sandy"
+                            ]
+                        },
+                        {
+                            "field_name": "foundation_pruning_date",
+                            "label": "Foundation Pruning Date",
+                            "type": "date",
+                            "required": true
+                        },
+                        {
+                            "field_name": "fruit_pruning_date",
+                            "label": "Fruit Pruning Date",
+                            "type": "date",
+                            "required": true
+                        }
+                    ]
+                },
+                "registration_page_details_section": {
+                    "description": "Appears inside the plot card ONLY when PlantAge = '3 to 13 years' and crop type is Grapes.",
+                    "condition": "PlantAge == '3 to 13 years'",
+                    "fields": [
+                        {
+                            "field_name": "variety",
+                            "label": "Variety",
+                            "type": "dropdown",
+                            "required": true,
+                            "options": [
+                                "Thompson",
+                                "Tas-A-Ganesh",
+                                "Sonaka",
+                                "Manik chaman",
+                                "Flame seedless",
+                                "Crimson seedless",
+                                "Red Globe",
+                                "Sudhakar seedless",
+                                "Allison",
+                                "Timco",
+                                "ARD-35",
+                                "ARD-36"
+                            ]
+                        },
+                        {
+                            "field_name": "irrigation_method",
+                            "label": "Irrigation Method",
+                            "type": "dropdown",
+                            "required": true,
+                            "options": [
+                                "Drip"
+                            ],
+                            "conditional_child": {
+                                "trigger_value": "Drip",
+                                "child_fields": [
+                                    {
+                                        "field_name": "row_spacing",
+                                        "label": "Row Spacing",
+                                        "type": "text",
+                                        "required": true
+                                    },
+                                    {
+                                        "field_name": "plant_spacing",
+                                        "label": "Plant Spacing",
+                                        "type": "text",
+                                        "required": true
+                                    },
+                                    {
+                                        "field_name": "flow_rate",
+                                        "label": "Flow Rate",
+                                        "type": "text",
+                                        "required": true
+                                    },
+                                    {
+                                        "field_name": "dripper_per_plant",
+                                        "label": "Dripper Per Plant",
+                                        "type": "text",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "field_name": "soil_type",
+                            "label": "Soil Type",
+                            "type": "dropdown",
+                            "required": true,
+                            "options": [
+                                "Clay",
+                                "loam",
+                                "sandy loam",
+                                "sandy"
+                            ]
+                        },
+                        {
+                            "field_name": "plantation_date",
+                            "label": "Plantation Date",
+                            "type": "date",
+                            "required": true
+                        },
+                        {
+                            "field_name": "foundation_pruning_date",
+                            "label": "Foundation Pruning Date",
+                            "type": "date",
+                            "required": true
+                        },
+                        {
+                            "field_name": "fruit_pruning_date",
+                            "label": "Fruit Pruning Date",
+                            "type": "date",
+                            "required": true
+                        },
+                        {
+                            "field_name": "last_harvesting_date",
+                            "label": "Last Harvesting Date",
+                            "type": "date",
+                            "required": true
+                        },
+                        {
+                            "field_name": "intercropping",
+                            "label": "Intercropping",
+                            "type": "dropdown",
+                            "required": true,
+                            "options": [
+                                "yes",
+                                "no"
+                            ],
+                            "conditional_child": {
+                                "trigger_value": "yes",
+                                "child_field": {
+                                    "field_name": "intercropping_crop_name",
+                                    "label": "Intercrop Name",
+                                    "type": "text",
+                                    "required": true
+                                }
+                            }
+                        },
+                        {
+                            "field_name": "soil_report",
+                            "label": "Soil Report",
+                            "type": "toggle (boolean)",
+                            "required": false,
+                            "description": "Toggle switch. When enabled opens a modal to fill soil details.",
+                            "modal_fields_when_enabled": [
+                                {
+                                    "field_name": "nitrogen",
+                                    "label": "Nitrogen",
+                                    "type": "number"
+                                },
+                                {
+                                    "field_name": "phosphorus",
+                                    "label": "Phosphorus",
+                                    "type": "number"
+                                },
+                                {
+                                    "field_name": "potassium",
+                                    "label": "Potassium",
+                                    "type": "number"
+                                },
+                                {
+                                    "field_name": "soil_ph",
+                                    "label": "Soil pH",
+                                    "type": "number"
+                                },
+                                {
+                                    "field_name": "cec",
+                                    "label": "CEC",
+                                    "type": "number"
+                                },
+                                {
+                                    "field_name": "organic_carbon",
+                                    "label": "Organic Carbon",
+                                    "type": "number"
+                                },
+                                {
+                                    "field_name": "bulk_density",
+                                    "label": "Bulk Density",
+                                    "type": "number"
+                                },
+                                {
+                                    "field_name": "fe",
+                                    "label": "Fe (Iron)",
+                                    "type": "number"
+                                },
+                                {
+                                    "field_name": "soil_organic_carbon",
+                                    "label": "Soil Organic Carbon",
+                                    "type": "number"
+                                }
+                            ]
+                        },
+                        {
+                            "field_name": "plot_photo",
+                            "label": "Photo of plot (for variety identification)",
+                            "type": "file",
+                            "required": false,
+                            "description": "Always shown at end of Registration page details"
+                        },
+                        {
+                            "field_name": "residue_reported",
+                            "label": "Residue reported",
+                            "type": "file",
+                            "required": false,
+                            "description": "Always shown at end of Registration page details"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "api_payload_structure": {
+        "description": "Structure sent to the backend API (registerFarmerAllInOne endpoint) per plot.",
+        "endpoint": "POST /api/register-all-in-one/",
+        "per_plot_payload": {
+            "farmer": {
+                "username": "string",
+                "email": "string",
+                "password": "string",
+                "first_name": "string",
+                "last_name": "string",
+                "phone_number": "string",
+                "address": "string",
+                "village": "string (from plot)",
+                "district": "string",
+                "state": "string",
+                "taluka": "string"
+            },
+            "plot": {
+                "gat_number": "string (Group_Gat_No)",
+                "plot_number": "string (Gat_No_Id)",
+                "village": "string",
+                "taluka": "string",
+                "district": "string",
+                "state": "string",
+                "country": "India",
+                "pin_code": "string",
+                "location": {
+                    "type": "Point",
+                    "coordinates": [
+                        "longitude",
+                        "latitude"
+                    ]
+                },
+                "boundary": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            "array of [lng, lat] pairs"
+                        ]
+                    ]
+                }
+            },
+            "farm": {
+                "address": "string",
+                "area_size": "string (hectares, 4 decimal places)",
+                "soil_type_name": "string",
+                "crop_type": "Grapes",
+                "crop_variety": "string",
+                "plant_age": "0_3 | 2_13 (mapped from PlantAge dropdown)",
+                "plantation_date": "YYYY-MM-DD",
+                "foundation_pruning_date": "YYYY-MM-DD",
+                "fruit_pruning_date": "YYYY-MM-DD",
+                "last_harvesting_date": "YYYY-MM-DD",
+                "row_spacing": "string",
+                "plant_spacing": "string",
+                "variety_type": "seasonal",
+                "variety_subtype": "table_grapes",
+                "variety_timing": "early",
+                "resting_period_days": "60"
+            },
+            "irrigation": {
+                "irrigation_type_name": "drip | flood",
+                "status": true,
+                "location": {
+                    "type": "Point",
+                    "coordinates": [
+                        "longitude",
+                        "latitude"
+                    ]
+                },
+                "drip_only_fields": {
+                    "plants_per_acre": "integer (calculated from spacing)",
+                    "flow_rate_lph": "float",
+                    "emitters_count": "integer"
+                },
+                "flood_only_fields": {
+                    "motor_horsepower": "float",
+                    "pipe_width_inches": "float",
+                    "distance_motor_to_plot_m": "float"
+                }
+            },
+            "soil_report": {
+                "description": "Included only if soil_report toggle is enabled",
+                "nitrogen": "float",
+                "phosphorus": "float",
+                "potassium": "float",
+                "soil_ph": "float",
+                "cec": "float",
+                "organic_carbon": "float",
+                "bulk_density": "float",
+                "fe": "float",
+                "soil_organic_carbon": "float"
+            }
+        }
+    },
+    "plant_age_mapping": {
+        "description": "How the frontend PlantAge dropdown maps to the backend plant_age field",
+        "0 to 3 years": "0_3",
+        "3 to 13 years": "2_13"
+    },
+    "notes": [
+        "One API call is made per plot. If a farmer has 3 plots, 3 separate registration requests are sent.",
+        "Authentication required: Field Officer or Admin JWT token must be present in Authorization header.",
+        "The 'New Plantation' section (PlantAge 0-3) and 'Registration Page Details' (PlantAge 3-13) are mutually exclusive per plot.",
+        "grapes_type and grapes_season fields are currently captured in the frontend but are not yet mapped in the API payload — backend can use them for future use.",
+        "crop_type is fixed to 'Grapes' by default in the current implementation."
+    ]
+}
