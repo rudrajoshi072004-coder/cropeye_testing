@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+  base: "/grapes/",
   assetsInclude: ["**/*.geojson"],
 
   // Ensure single React instance (fixes "isElement" undefined errors with chunking)
